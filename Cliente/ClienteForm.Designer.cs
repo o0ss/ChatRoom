@@ -1,6 +1,6 @@
 ﻿namespace Cliente
 {
-    partial class Form1
+    partial class ClienteForm
     {
         /// <summary>
         ///  Required designer variable.
