@@ -146,7 +146,6 @@ namespace Servidor
         private void EnviarMensaje()
         {
             MessageBox.Show("test from enviar");
-            Thread.Sleep(5000);
 
             do
             {
@@ -165,7 +164,6 @@ namespace Servidor
         private void RecibirMensajes()
         {
             MessageBox.Show("test from recibir");
-            Thread.Sleep(7000);
             msgs_nuevos.Add("msg from recibir");
 
             //string msg_recvd;
@@ -190,8 +188,7 @@ namespace Servidor
         }
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            Task sendTask = new Task(EnviarMensaje);
-            sendTask.Start();
+            send = true;
         }
 
         private void DetenerServidor()
