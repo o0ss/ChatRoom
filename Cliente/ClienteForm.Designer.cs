@@ -47,11 +47,13 @@
             this.buttonConnect.TabIndex = 0;
             this.buttonConnect.Text = "Conectar";
             this.buttonConnect.UseVisualStyleBackColor = true;
+            this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
             // 
             // textBoxIPAddress
             // 
             this.textBoxIPAddress.Location = new System.Drawing.Point(21, 39);
             this.textBoxIPAddress.Name = "textBoxIPAddress";
+            this.textBoxIPAddress.PlaceholderText = "Dirección IP";
             this.textBoxIPAddress.Size = new System.Drawing.Size(156, 23);
             this.textBoxIPAddress.TabIndex = 1;
             // 
@@ -75,6 +77,7 @@
             // 
             // listBox1
             // 
+            this.listBox1.Enabled = false;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 15;
             this.listBox1.Location = new System.Drawing.Point(206, 39);
@@ -93,7 +96,9 @@
             // 
             // textBoxInput
             // 
+            this.textBoxInput.Enabled = false;
             this.textBoxInput.Location = new System.Drawing.Point(206, 368);
+            this.textBoxInput.Multiline = true;
             this.textBoxInput.Name = "textBoxInput";
             this.textBoxInput.Size = new System.Drawing.Size(334, 23);
             this.textBoxInput.TabIndex = 6;
@@ -109,6 +114,7 @@
             // 
             // buttonSend
             // 
+            this.buttonSend.Enabled = false;
             this.buttonSend.Location = new System.Drawing.Point(427, 402);
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(113, 23);
