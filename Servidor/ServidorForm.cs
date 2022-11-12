@@ -11,7 +11,6 @@ namespace Servidor
         static IPHostEntry host = Dns.GetHostEntry("localhost");
         static IPAddress ip_addr = host.AddressList[0];
         static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, 11200);
-        static List<String> msgs_nuevos = new List<String>();
         private Socket listener, handler;
         private bool salir = false, send = false, activo = false, connected = false, last_conn_st = false, bind = false;
         private DateTime now = DateTime.Now, last = DateTime.MinValue;
