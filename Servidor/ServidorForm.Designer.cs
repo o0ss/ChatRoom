@@ -132,9 +132,9 @@
             this.labelEscribeMsg.AutoSize = true;
             this.labelEscribeMsg.Location = new System.Drawing.Point(23, 357);
             this.labelEscribeMsg.Name = "labelEscribeMsg";
-            this.labelEscribeMsg.Size = new System.Drawing.Size(111, 15);
+            this.labelEscribeMsg.Size = new System.Drawing.Size(108, 15);
             this.labelEscribeMsg.TabIndex = 11;
-            this.labelEscribeMsg.Text = "Escribe un mensaje:";
+            this.labelEscribeMsg.Text = "Escribe un mensaje";
             // 
             // ServidorForm
             // 
