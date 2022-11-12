@@ -28,69 +28,90 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelUsrs = new System.Windows.Forms.Label();
             this.labelMsgs = new System.Windows.Forms.Label();
             this.buttonStart = new System.Windows.Forms.Button();
-            this.listBoxUsrs = new System.Windows.Forms.ListBox();
             this.listBoxMsgs = new System.Windows.Forms.ListBox();
+            this.buttonSend = new System.Windows.Forms.Button();
+            this.richTextBoxInput = new System.Windows.Forms.RichTextBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
-            // 
-            // labelUsrs
-            // 
-            this.labelUsrs.AutoSize = true;
-            this.labelUsrs.Location = new System.Drawing.Point(29, 50);
-            this.labelUsrs.Name = "labelUsrs";
-            this.labelUsrs.Size = new System.Drawing.Size(232, 32);
-            this.labelUsrs.TabIndex = 0;
-            this.labelUsrs.Text = "Usuarios conectados";
             // 
             // labelMsgs
             // 
             this.labelMsgs.AutoSize = true;
-            this.labelMsgs.Location = new System.Drawing.Point(381, 50);
+            this.labelMsgs.Enabled = false;
+            this.labelMsgs.Location = new System.Drawing.Point(23, 50);
+            this.labelMsgs.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelMsgs.Name = "labelMsgs";
-            this.labelMsgs.Size = new System.Drawing.Size(114, 32);
+            this.labelMsgs.Size = new System.Drawing.Size(56, 15);
             this.labelMsgs.TabIndex = 1;
             this.labelMsgs.Text = "Mensajes";
             // 
             // buttonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(858, 36);
+            this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonStart.Location = new System.Drawing.Point(23, 10);
+            this.buttonStart.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(150, 46);
+            this.buttonStart.Size = new System.Drawing.Size(352, 22);
             this.buttonStart.TabIndex = 4;
             this.buttonStart.Text = "Iniciar";
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
-            // listBoxUsrs
-            // 
-            this.listBoxUsrs.FormattingEnabled = true;
-            this.listBoxUsrs.ItemHeight = 32;
-            this.listBoxUsrs.Location = new System.Drawing.Point(29, 107);
-            this.listBoxUsrs.Name = "listBoxUsrs";
-            this.listBoxUsrs.Size = new System.Drawing.Size(288, 516);
-            this.listBoxUsrs.TabIndex = 5;
-            // 
             // listBoxMsgs
             // 
+            this.listBoxMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxMsgs.Enabled = false;
+            this.listBoxMsgs.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.listBoxMsgs.FormattingEnabled = true;
-            this.listBoxMsgs.ItemHeight = 32;
-            this.listBoxMsgs.Location = new System.Drawing.Point(372, 107);
+            this.listBoxMsgs.ItemHeight = 20;
+            this.listBoxMsgs.Location = new System.Drawing.Point(23, 77);
+            this.listBoxMsgs.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.listBoxMsgs.Name = "listBoxMsgs";
-            this.listBoxMsgs.Size = new System.Drawing.Size(650, 516);
+            this.listBoxMsgs.Size = new System.Drawing.Size(352, 224);
             this.listBoxMsgs.TabIndex = 7;
+            // 
+            // buttonSend
+            // 
+            this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSend.Enabled = false;
+            this.buttonSend.Location = new System.Drawing.Point(300, 419);
+            this.buttonSend.Name = "buttonSend";
+            this.buttonSend.Size = new System.Drawing.Size(75, 23);
+            this.buttonSend.TabIndex = 3;
+            this.buttonSend.Text = "Send";
+            this.buttonSend.UseVisualStyleBackColor = true;
+            this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
+            // 
+            // richTextBoxInput
+            // 
+            this.richTextBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxInput.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.richTextBoxInput.EnableAutoDragDrop = true;
+            this.richTextBoxInput.Enabled = false;
+            this.richTextBoxInput.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.richTextBoxInput.Location = new System.Drawing.Point(23, 336);
+            this.richTextBoxInput.Name = "richTextBoxInput";
+            this.richTextBoxInput.Size = new System.Drawing.Size(352, 77);
+            this.richTextBoxInput.TabIndex = 2;
+            this.richTextBoxInput.Text = "";
             // 
             // ServidorForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 32F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1061, 657);
+            this.ClientSize = new System.Drawing.Size(396, 457);
+            this.Controls.Add(this.richTextBoxInput);
+            this.Controls.Add(this.buttonSend);
             this.Controls.Add(this.listBoxMsgs);
-            this.Controls.Add(this.listBoxUsrs);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.labelMsgs);
-            this.Controls.Add(this.labelUsrs);
+            this.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.Name = "ServidorForm";
             this.Text = "ChatRoom - Servidor";
             this.ResumeLayout(false);
@@ -99,11 +120,11 @@
         }
 
         #endregion
-
-        private Label labelUsrs;
         private Label labelMsgs;
         private Button buttonStart;
-        private ListBox listBoxUsrs;
         private ListBox listBoxMsgs;
+        private Button buttonSend;
+        private RichTextBox richTextBoxInput;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }

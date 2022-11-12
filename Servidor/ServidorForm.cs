@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace Servidor
 {
@@ -11,7 +11,9 @@ namespace Servidor
         static IPHostEntry host = Dns.GetHostEntry("localhost");
         static IPAddress ip_addr = host.AddressList[0];
         static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, 11200);
-
+        static List<String> msgs_nuevos = new List<String>();
+        private Socket handler;
+        private bool salir = false, send = false;
 
         public ServidorForm()
         {
@@ -24,10 +26,21 @@ namespace Servidor
 
             try
             {
-                
-                Thread listener_thread = new Thread(new ThreadStart(ListenForClientes));
-                listener_thread.Start();
-                
+
+                //Thread listener_thread = new Thread(new ThreadStart(ListenForClientes));
+                //listener_thread.Start();
+                //ListenForClientes();
+
+                Socket listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                listener.Bind(localEndPoint);
+
+                listBoxMsgs.Items.Add("Test from initserver");
+
+                listener.Listen(10);
+                MessageBox.Show("Esperando conexión...");
+                handler = listener.Accept();
+                MessageBox.Show("handler accept");
+
             }
             catch (Exception e)
             {
@@ -40,8 +53,9 @@ namespace Servidor
         {
             Socket listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             listener.Bind(localEndPoint);
+            listener.Blocking = false;
 
-            listBoxMsgs.Items.Add("Added from thread");
+            listBoxMsgs.Items.Add("Test from ListenForClientes");
 
             List<Socket> handlers = new List<Socket>();
 
@@ -54,6 +68,7 @@ namespace Servidor
                 MessageBox.Show(String.Concat("Cliente num ", i.ToString()));
             }
 
+            MessageBox.Show("Fuera de ciclo for handlrers");
 
 
 
@@ -76,20 +91,96 @@ namespace Servidor
             MessageBox.Show("Cliente: " + clean_query);
 
             byte[] response_bytes = Encoding.UTF8.GetBytes("Bye!");
-            handler.Send(response_bytes);
+            handlers[0].Send(response_bytes);
 
 
 
-            handler.Shutdown(SocketShutdown.Both);
-            handler.Close();
+            handlers[0].Shutdown(SocketShutdown.Both);
+            handlers[0].Close();
 
             MessageBox.Show("Thread exited");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Thread test = new Thread(new ThreadStart(TestProc));
+            test.Start();
+            while(true)
+            {
+                while(msgs_nuevos.Count  > 0)
+                {
+                    listBoxMsgs.Items.Add(msgs_nuevos[0]);
+                    msgs_nuevos.RemoveAt(0);
+                    Thread.Sleep(100);
+                }
+            }
+        }
+
+        private void TestProc()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                msgs_nuevos.Add($"Msg num {i}");
+                Thread.Sleep(1000);
+            }
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
             IniciarServidor();
             buttonStart.Enabled = false;
+            listBoxMsgs.Enabled = true;
+            labelMsgs.Enabled = true;
+            richTextBoxInput.Enabled = true;
+            buttonSend.Enabled = true;
+
+            while(!salir)
+            {
+                await RecibirMensajes();
+                if(send)
+                {
+                    await EnviarMensaje();
+                }
+            }
+
+            handler.Shutdown(SocketShutdown.Both);
+            handler.Close();
+
+            MessageBox.Show("Server closed");
+
+        }
+
+        private void RecibirMensajes()
+        {
+            string msg_recvd;
+            byte[] bytes_recvd = new byte[MAX_BYTES];
+            int num_bytes_recvd;
+
+
+            while (true)
+            {
+                num_bytes_recvd = handler.Receive(bytes_recvd);
+                msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
+
+                if (msg_recvd.IndexOf("<EOF>") > -1)
+                    break;
+            }
+            string clean_query = msg_recvd[..^5];
+
+            listBoxMsgs.Items.Add("Cliente: " + clean_query);
+
+        }
+
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+            EnviarMensaje();
+        }
+
+        private void EnviarMensaje()
+        {
+            byte[] response_bytes = Encoding.UTF8.GetBytes(richTextBoxInput.Text);
+            handler.Send(response_bytes);
+            return;
         }
     }
 }
