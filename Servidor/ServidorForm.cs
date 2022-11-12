@@ -19,13 +19,28 @@ namespace Servidor
             InitializeComponent();
         }
 
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            IniciarServidor();
+            buttonStart.Enabled = false;
+            listBoxMsgs.Enabled = true;
+            labelMsgs.Enabled = true;
+            textBoxInput.Enabled = true;
+            buttonSend.Enabled = true;
+
+            IntercambiarMensajes();
+
+            //handler.Shutdown(SocketShutdown.Both);
+            //handler.Close();
+
+            MessageBox.Show("Server closed");
+
+        }
+
         public void IniciarServidor()
         {
-
-
             try
             {
-
                 //Thread listener_thread = new Thread(new ThreadStart(ListenForClientes));
                 //listener_thread.Start();
                 //ListenForClientes();
@@ -69,9 +84,6 @@ namespace Servidor
 
             MessageBox.Show("Fuera de ciclo for handlrers");
 
-
-
-
             string msg_recvd;
             byte[] bytes_recvd = new byte[MAX_BYTES];
             int num_bytes_recvd;
@@ -93,101 +105,63 @@ namespace Servidor
             handlers[0].Send(response_bytes);
 
 
-
             handlers[0].Shutdown(SocketShutdown.Both);
             handlers[0].Close();
 
             MessageBox.Show("Thread exited");
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void IntercambiarMensajes()
         {
-            Thread test = new Thread(new ThreadStart(TestProc));
-            test.Start();
-            while (true)
-            {
-                while (msgs_nuevos.Count > 0)
-                {
-                    listBoxMsgs.Items.Add(msgs_nuevos[0]);
-                    msgs_nuevos.RemoveAt(0);
-                    Thread.Sleep(100);
-                }
-            }
+            Task taskRecibir = new Task(RecibirMensajes);
+            Task taskEnviar = new Task(EnviarMensaje);
+
+            taskRecibir.Start();
+            taskEnviar.Start();
+
+            return;
         }
 
-        private void TestProc()
+        private void EnviarMensaje()
         {
-            for (int i = 0; i < 10; i++)
-            {
-                msgs_nuevos.Add($"Msg num {i}");
-                Thread.Sleep(1000);
-            }
+            Thread.Sleep(5000);
+            MessageBox.Show("End enviar mensaje");
+            //byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
+            //handler.Send(response_bytes);
+            return;
         }
 
-        private async void buttonStart_Click(object sender, EventArgs e)
+        private void RecibirMensajes()
         {
-            IniciarServidor();
-            buttonStart.Enabled = false;
-            listBoxMsgs.Enabled = true;
-            labelMsgs.Enabled = true;
-            textBoxInput.Enabled = true;
-            buttonSend.Enabled = true;
 
-            await IntercambiarMensajes();
+            Thread.Sleep(7000);
+            MessageBox.Show("End Recibir");
 
-            handler.Shutdown(SocketShutdown.Both);
-            handler.Close();
+            //string msg_recvd;
+            //byte[] bytes_recvd = new byte[MAX_BYTES];
+            //int num_bytes_recvd;
 
-            MessageBox.Show("Server closed");
 
+            //while (true)
+            //{
+            //    num_bytes_recvd = handler.Receive(bytes_recvd);
+            //    msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
+
+            //    if (msg_recvd.IndexOf("<EOF>") > -1)
+            //        break;
+            //}
+            //string msg = msg_recvd[..^5];
+            //msg = "Cliente: " + msg;
+            //listBoxMsgs.Items.Add(msg);
+
+
+            return;
         }
-
-        private async Task<bool> RecibirMensajes()
-        {
-            string msg_recvd;
-            byte[] bytes_recvd = new byte[MAX_BYTES];
-            int num_bytes_recvd;
-
-
-            while (true)
-            {
-                num_bytes_recvd = handler.Receive(bytes_recvd);
-                msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
-
-                if (msg_recvd.IndexOf("<EOF>") > -1)
-                    break;
-            }
-            string msg = msg_recvd[..^5];
-            msg = "Cliente: " + msg;
-            listBoxMsgs.Items.Add(msg);
-            await Task.Delay(1000);
-
-            return Task.FromResult(true);
-        }
-
         private void buttonSend_Click(object sender, EventArgs e)
         {
             //
             //send = true;
             EnviarMensaje();
-        }
-
-        private Task<bool> EnviarMensaje()
-        {
-            byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
-            handler.Send(response_bytes);
-            return Task.FromResult(true);
-        }
-
-        private async Task<bool> IntercambiarMensajes()
-        {
-            Task<bool> taskRecibir = RecibirMensajes();
-            Task<bool> taskEnviar = EnviarMensaje();
-
-            await taskRecibir;
-            await taskEnviar;
-
-            return Task.FromResult(true);
         }
     }
 }
