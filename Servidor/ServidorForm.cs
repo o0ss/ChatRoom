@@ -12,8 +12,8 @@ namespace Servidor
         static IPAddress ip_addr = host.AddressList[0];
         static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, 11200);
         static List<String> msgs_nuevos = new List<String>();
-        private Socket handler;
-        private bool salir = false, send = false, activo = false;
+        private Socket listener, handler;
+        private bool salir = false, send = false, activo = false, connected = false, last_conn_st = false, bind = false;
         private DateTime now = DateTime.Now, last = DateTime.MinValue;
 
         public ServidorForm()
@@ -25,7 +25,11 @@ namespace Servidor
         {
             if (!activo)
             {
+
+                //Task inicServTask = new Task(IniciarServidor);
+                //inicServTask.Start();
                 IniciarServidor();
+
                 listBoxMsgs.Enabled = true;
                 labelMsgs.Enabled = true;
                 textBoxInput.Enabled = true;
@@ -56,17 +60,20 @@ namespace Servidor
                 //listener_thread.Start();
                 //ListenForClientes();
 
-                Socket listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                listener.Bind(localEndPoint);
+                if (!bind)
+                {
+                    listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                    listener.Bind(localEndPoint);
 
-                AgregarAMensajes("Esperando conexión...");
-                listener.Listen(10);
+                    listener.Listen(10);
+                    bind = true;
+                }
 
                 handler = listener.Accept();
+                timerCheckConnection.Enabled = true;
                 timerCheckMsgs.Enabled = true;
-                AgregarAMensajes("Conexión exitosa");
 
-                //listener.Shutdown(SocketShutdown.Both);
+                //AgregarAMensajes("Conexión exitosa");
 
             }
             catch (Exception e)
@@ -221,6 +228,19 @@ namespace Servidor
             return;
         }
 
+        private void timerCheckConnection_Tick(object sender, EventArgs e)
+        {
+            connected = handler.Connected;
+            if (last_conn_st != connected)
+            {
+                //IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString())
+                string rem_ip = ((IPEndPoint)handler.RemoteEndPoint).Address.ToString();
+                labelConnStatus.Text = connected ?
+                    "Conectado a " + rem_ip : "Desconectado";
+                last_conn_st = connected;
+            }
+        }
+
         private void timerCheckMsgs_Tick(object sender, EventArgs e)
         {
             RecibirMensajes();
@@ -234,17 +254,21 @@ namespace Servidor
         private void DetenerServidor()
         {
             timerCheckMsgs.Enabled = false;
+            timerCheckConnection.Enabled = false;
             handler.Shutdown(SocketShutdown.Both);
             handler.Close();
+            labelConnStatus.Text = "Desconectado.";
+            last_conn_st = false;
         }
 
         private void AgregarAMensajes(string msg)
         {
             now = DateTime.Now;
             TimeSpan diff = now - last;
-            if (diff.Seconds > 5)
+            if (diff.Seconds > 10)
             {
-                listBoxMsgs.Items.Add("------ " + now.TimeOfDay + " ------");
+                string time = now.Hour + ":" + now.Minute + ":" + now.Second;
+                listBoxMsgs.Items.Add("        " + time + "        ");
             }
             listBoxMsgs.Items.Add(msg);
             last = now;

@@ -33,17 +33,19 @@
             this.buttonStart = new System.Windows.Forms.Button();
             this.listBoxMsgs = new System.Windows.Forms.ListBox();
             this.buttonSend = new System.Windows.Forms.Button();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.textBoxInput = new System.Windows.Forms.TextBox();
             this.timerCheckMsgs = new System.Windows.Forms.Timer(this.components);
             this.labelServidorStatus = new System.Windows.Forms.Label();
+            this.timerCheckConnection = new System.Windows.Forms.Timer(this.components);
+            this.labelConnStatus = new System.Windows.Forms.Label();
+            this.labelEscribeMsg = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelMsgs
             // 
             this.labelMsgs.AutoSize = true;
             this.labelMsgs.Enabled = false;
-            this.labelMsgs.Location = new System.Drawing.Point(23, 50);
+            this.labelMsgs.Location = new System.Drawing.Point(23, 21);
             this.labelMsgs.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelMsgs.Name = "labelMsgs";
             this.labelMsgs.Size = new System.Drawing.Size(56, 15);
@@ -54,7 +56,7 @@
             // 
             this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonStart.Location = new System.Drawing.Point(459, 77);
+            this.buttonStart.Location = new System.Drawing.Point(459, 41);
             this.buttonStart.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(163, 22);
@@ -71,7 +73,7 @@
             this.listBoxMsgs.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.listBoxMsgs.FormattingEnabled = true;
             this.listBoxMsgs.ItemHeight = 20;
-            this.listBoxMsgs.Location = new System.Drawing.Point(23, 77);
+            this.listBoxMsgs.Location = new System.Drawing.Point(23, 41);
             this.listBoxMsgs.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.listBoxMsgs.Name = "listBoxMsgs";
             this.listBoxMsgs.Size = new System.Drawing.Size(397, 284);
@@ -81,9 +83,9 @@
             // 
             this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSend.Enabled = false;
-            this.buttonSend.Location = new System.Drawing.Point(345, 407);
+            this.buttonSend.Location = new System.Drawing.Point(314, 407);
             this.buttonSend.Name = "buttonSend";
-            this.buttonSend.Size = new System.Drawing.Size(75, 23);
+            this.buttonSend.Size = new System.Drawing.Size(106, 23);
             this.buttonSend.TabIndex = 3;
             this.buttonSend.Text = "Enviar";
             this.buttonSend.UseVisualStyleBackColor = true;
@@ -105,17 +107,42 @@
             // labelServidorStatus
             // 
             this.labelServidorStatus.AutoSize = true;
-            this.labelServidorStatus.Location = new System.Drawing.Point(459, 111);
+            this.labelServidorStatus.Location = new System.Drawing.Point(459, 76);
             this.labelServidorStatus.Name = "labelServidorStatus";
             this.labelServidorStatus.Size = new System.Drawing.Size(154, 15);
             this.labelServidorStatus.TabIndex = 9;
             this.labelServidorStatus.Text = "El servidor está desactivado.";
+            // 
+            // timerCheckConnection
+            // 
+            this.timerCheckConnection.Interval = 2000;
+            this.timerCheckConnection.Tick += new System.EventHandler(this.timerCheckConnection_Tick);
+            // 
+            // labelConnStatus
+            // 
+            this.labelConnStatus.AutoSize = true;
+            this.labelConnStatus.Location = new System.Drawing.Point(338, 21);
+            this.labelConnStatus.Name = "labelConnStatus";
+            this.labelConnStatus.Size = new System.Drawing.Size(82, 15);
+            this.labelConnStatus.TabIndex = 10;
+            this.labelConnStatus.Text = "Desconectado";
+            // 
+            // labelEscribeMsg
+            // 
+            this.labelEscribeMsg.AutoSize = true;
+            this.labelEscribeMsg.Location = new System.Drawing.Point(23, 357);
+            this.labelEscribeMsg.Name = "labelEscribeMsg";
+            this.labelEscribeMsg.Size = new System.Drawing.Size(111, 15);
+            this.labelEscribeMsg.TabIndex = 11;
+            this.labelEscribeMsg.Text = "Escribe un mensaje:";
             // 
             // ServidorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(647, 442);
+            this.Controls.Add(this.labelEscribeMsg);
+            this.Controls.Add(this.labelConnStatus);
             this.Controls.Add(this.labelServidorStatus);
             this.Controls.Add(this.textBoxInput);
             this.Controls.Add(this.buttonSend);
@@ -135,9 +162,11 @@
         private Button buttonStart;
         private ListBox listBoxMsgs;
         private Button buttonSend;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private TextBox textBoxInput;
         private System.Windows.Forms.Timer timerCheckMsgs;
         private Label labelServidorStatus;
+        private System.Windows.Forms.Timer timerCheckConnection;
+        private Label labelConnStatus;
+        private Label labelEscribeMsg;
     }
 }
