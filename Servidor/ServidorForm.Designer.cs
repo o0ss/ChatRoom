@@ -32,8 +32,8 @@
             this.buttonStart = new System.Windows.Forms.Button();
             this.listBoxMsgs = new System.Windows.Forms.ListBox();
             this.buttonSend = new System.Windows.Forms.Button();
-            this.richTextBoxInput = new System.Windows.Forms.RichTextBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.textBoxInput = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // labelMsgs
@@ -72,7 +72,7 @@
             this.listBoxMsgs.Location = new System.Drawing.Point(23, 77);
             this.listBoxMsgs.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.listBoxMsgs.Name = "listBoxMsgs";
-            this.listBoxMsgs.Size = new System.Drawing.Size(352, 224);
+            this.listBoxMsgs.Size = new System.Drawing.Size(352, 304);
             this.listBoxMsgs.TabIndex = 7;
             // 
             // buttonSend
@@ -83,30 +83,23 @@
             this.buttonSend.Name = "buttonSend";
             this.buttonSend.Size = new System.Drawing.Size(75, 23);
             this.buttonSend.TabIndex = 3;
-            this.buttonSend.Text = "Send";
+            this.buttonSend.Text = "Enviar";
             this.buttonSend.UseVisualStyleBackColor = true;
             this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
             // 
-            // richTextBoxInput
+            // textBoxInput
             // 
-            this.richTextBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxInput.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.richTextBoxInput.EnableAutoDragDrop = true;
-            this.richTextBoxInput.Enabled = false;
-            this.richTextBoxInput.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.richTextBoxInput.Location = new System.Drawing.Point(23, 336);
-            this.richTextBoxInput.Name = "richTextBoxInput";
-            this.richTextBoxInput.Size = new System.Drawing.Size(352, 77);
-            this.richTextBoxInput.TabIndex = 2;
-            this.richTextBoxInput.Text = "";
+            this.textBoxInput.Location = new System.Drawing.Point(23, 390);
+            this.textBoxInput.Name = "textBoxInput";
+            this.textBoxInput.Size = new System.Drawing.Size(352, 23);
+            this.textBoxInput.TabIndex = 8;
             // 
             // ServidorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(396, 457);
-            this.Controls.Add(this.richTextBoxInput);
+            this.Controls.Add(this.textBoxInput);
             this.Controls.Add(this.buttonSend);
             this.Controls.Add(this.listBoxMsgs);
             this.Controls.Add(this.buttonStart);
@@ -124,7 +117,7 @@
         private Button buttonStart;
         private ListBox listBoxMsgs;
         private Button buttonSend;
-        private RichTextBox richTextBoxInput;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private TextBox textBoxInput;
     }
 }

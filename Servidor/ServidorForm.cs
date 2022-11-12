@@ -1,7 +1,6 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Servidor
 {
@@ -22,7 +21,7 @@ namespace Servidor
 
         public void IniciarServidor()
         {
-            
+
 
             try
             {
@@ -105,9 +104,9 @@ namespace Servidor
         {
             Thread test = new Thread(new ThreadStart(TestProc));
             test.Start();
-            while(true)
+            while (true)
             {
-                while(msgs_nuevos.Count  > 0)
+                while (msgs_nuevos.Count > 0)
                 {
                     listBoxMsgs.Items.Add(msgs_nuevos[0]);
                     msgs_nuevos.RemoveAt(0);
@@ -125,23 +124,16 @@ namespace Servidor
             }
         }
 
-        private void buttonStart_Click(object sender, EventArgs e)
+        private async void buttonStart_Click(object sender, EventArgs e)
         {
             IniciarServidor();
             buttonStart.Enabled = false;
             listBoxMsgs.Enabled = true;
             labelMsgs.Enabled = true;
-            richTextBoxInput.Enabled = true;
+            textBoxInput.Enabled = true;
             buttonSend.Enabled = true;
 
-            while(!salir)
-            {
-                await RecibirMensajes();
-                if(send)
-                {
-                    await EnviarMensaje();
-                }
-            }
+            await IntercambiarMensajes();
 
             handler.Shutdown(SocketShutdown.Both);
             handler.Close();
@@ -150,7 +142,7 @@ namespace Servidor
 
         }
 
-        private void RecibirMensajes()
+        private async Task<bool> RecibirMensajes()
         {
             string msg_recvd;
             byte[] bytes_recvd = new byte[MAX_BYTES];
@@ -165,22 +157,37 @@ namespace Servidor
                 if (msg_recvd.IndexOf("<EOF>") > -1)
                     break;
             }
-            string clean_query = msg_recvd[..^5];
+            string msg = msg_recvd[..^5];
+            msg = "Cliente: " + msg;
+            listBoxMsgs.Items.Add(msg);
+            await Task.Delay(1000);
 
-            listBoxMsgs.Items.Add("Cliente: " + clean_query);
-
+            return Task.FromResult(true);
         }
 
         private void buttonSend_Click(object sender, EventArgs e)
         {
+            //
+            //send = true;
             EnviarMensaje();
         }
 
-        private void EnviarMensaje()
+        private Task<bool> EnviarMensaje()
         {
-            byte[] response_bytes = Encoding.UTF8.GetBytes(richTextBoxInput.Text);
+            byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
             handler.Send(response_bytes);
-            return;
+            return Task.FromResult(true);
+        }
+
+        private async Task<bool> IntercambiarMensajes()
+        {
+            Task<bool> taskRecibir = RecibirMensajes();
+            Task<bool> taskEnviar = EnviarMensaje();
+
+            await taskRecibir;
+            await taskEnviar;
+
+            return Task.FromResult(true);
         }
     }
 }
