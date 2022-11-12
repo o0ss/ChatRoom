@@ -1,3 +1,4 @@
+using System.CodeDom.Compiler;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -51,8 +52,8 @@ namespace Servidor
                 Socket listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 listener.Bind(localEndPoint);
 
-                listener.Listen(10);
                 AgregarAMensajes("Esperando conexión...");
+                listener.Listen(10);
 
                 handler = listener.Accept();
                 AgregarAMensajes("Conexión exitosa");
@@ -123,23 +124,49 @@ namespace Servidor
             taskRecibir.Start();
             taskEnviar.Start();
 
+            do
+            {
+                if(msgs_nuevos.Count > 0)
+                {
+                    if (msgs_nuevos.ElementAt(0).Equals("exit!"))
+                    {
+                        salir = true;
+                    }
+                    else
+                    {
+                        AgregarAMensajes(msgs_nuevos.ElementAt(0));
+                        msgs_nuevos.RemoveAt(0);
+                    }
+                }
+            } while (!salir);
+
             return;
         }
 
         private void EnviarMensaje()
         {
+            MessageBox.Show("test from enviar");
             Thread.Sleep(5000);
-            AgregarAMensajes("End enviar");
-            byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
-            handler.Send(response_bytes);
+
+            do
+            {
+                if(send)
+                {
+                    byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
+                    handler.Send(response_bytes);
+                    textBoxInput.Clear();
+                    send = false;
+                }
+            } while (!salir);
+
             return;
         }
 
         private void RecibirMensajes()
         {
-
+            MessageBox.Show("test from recibir");
             Thread.Sleep(7000);
-            AgregarAMensajes("End recibir");
+            msgs_nuevos.Add("msg from recibir");
 
             //string msg_recvd;
             //byte[] bytes_recvd = new byte[MAX_BYTES];
@@ -175,12 +202,14 @@ namespace Servidor
 
         private void AgregarAMensajes(string msg)
         {
-            int diff = last.CompareTo(now);
-            if (diff > 1)
+            now = DateTime.Now;
+            TimeSpan diff = now - last;
+            if (diff.Seconds > 20)
             {
                 listBoxMsgs.Items.Add("------ " + now + " ------");
             }
             listBoxMsgs.Items.Add(msg);
+            last = now;
         }
     }
 }
