@@ -123,12 +123,7 @@ namespace Cliente
 
                 if (msg.Equals(EXIT_SIG))
                 {
-                    timerCheckMsgs.Enabled = false;
-                    timerCheckConnection.Enabled = false;
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
-                    labelConnStatus.Text = "Desconectado.";
-                    last_conn_st = false;
+                    buttonConnect_Click(new object(), new EventArgs());
                     return;
                 }
 
@@ -176,7 +171,7 @@ namespace Cliente
             if (diff.Seconds > 10)
             {
                 string time = now.Hour + ":" + now.Minute + ":" + now.Second;
-                listBoxMsgs.Items.Add("        " + time + "        ");
+                listBoxMsgs.Items.Add("\n" + now.ToString());
             }
             listBoxMsgs.Items.Add(msg);
             last = now;

@@ -217,12 +217,7 @@ namespace Servidor
 
                 if (msg.Equals(EXIT_SIG))
                 {
-                    timerCheckMsgs.Enabled = false;
-                    timerCheckConnection.Enabled = false;
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
-                    labelConnStatus.Text = "Desconectado.";
-                    last_conn_st = false;
+                    buttonStart_Click(new object(), new EventArgs());
                     return;
                 }
 
