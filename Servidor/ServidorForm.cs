@@ -13,6 +13,7 @@ namespace Servidor
         static List<String> msgs_nuevos = new List<String>();
         private Socket handler;
         private bool salir = false, send = false;
+        private DateTime now = DateTime.Now, last = DateTime.MinValue;
 
         public ServidorForm()
         {
@@ -30,10 +31,12 @@ namespace Servidor
 
             IntercambiarMensajes();
 
+            DetenerServidor();
+
             //handler.Shutdown(SocketShutdown.Both);
             //handler.Close();
 
-            MessageBox.Show("Server closed");
+            AgregarAMensajes("Servidor apagado.");
 
         }
 
@@ -48,12 +51,13 @@ namespace Servidor
                 Socket listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 listener.Bind(localEndPoint);
 
-                listBoxMsgs.Items.Add("Test from initserver");
-
                 listener.Listen(10);
-                MessageBox.Show("Esperando conexión...");
+                AgregarAMensajes("Esperando conexión...");
+
                 handler = listener.Accept();
-                MessageBox.Show("handler accept");
+                AgregarAMensajes("Conexión exitosa");
+
+                //listener.Shutdown(SocketShutdown.Both);
 
             }
             catch (Exception e)
@@ -125,9 +129,9 @@ namespace Servidor
         private void EnviarMensaje()
         {
             Thread.Sleep(5000);
-            MessageBox.Show("End enviar mensaje");
-            //byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
-            //handler.Send(response_bytes);
+            AgregarAMensajes("End enviar");
+            byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
+            handler.Send(response_bytes);
             return;
         }
 
@@ -135,7 +139,7 @@ namespace Servidor
         {
 
             Thread.Sleep(7000);
-            MessageBox.Show("End Recibir");
+            AgregarAMensajes("End recibir");
 
             //string msg_recvd;
             //byte[] bytes_recvd = new byte[MAX_BYTES];
@@ -159,9 +163,24 @@ namespace Servidor
         }
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            //
-            //send = true;
-            EnviarMensaje();
+            Task sendTask = new Task(EnviarMensaje);
+            sendTask.Start();
+        }
+
+        private void DetenerServidor()
+        {
+            handler.Shutdown(SocketShutdown.Both);
+            handler.Close();
+        }
+
+        private void AgregarAMensajes(string msg)
+        {
+            int diff = last.CompareTo(now);
+            if (diff > 1)
+            {
+                listBoxMsgs.Items.Add("------ " + now + " ------");
+            }
+            listBoxMsgs.Items.Add(msg);
         }
     }
 }
