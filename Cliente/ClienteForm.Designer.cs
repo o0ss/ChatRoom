@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.buttonConnect = new System.Windows.Forms.Button();
             this.textBoxIPAddress = new System.Windows.Forms.TextBox();
             this.labelConnectTo = new System.Windows.Forms.Label();
@@ -37,6 +38,8 @@
             this.textBoxInput = new System.Windows.Forms.TextBox();
             this.labelEscribeMsgs = new System.Windows.Forms.Label();
             this.buttonSend = new System.Windows.Forms.Button();
+            this.timerCheckMsgs = new System.Windows.Forms.Timer(this.components);
+            this.timerCheckConnection = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // buttonConnect
@@ -121,6 +124,17 @@
             this.buttonSend.TabIndex = 8;
             this.buttonSend.Text = "Enviar";
             this.buttonSend.UseVisualStyleBackColor = true;
+            this.buttonSend.Click += new System.EventHandler(this.buttonSend_Click);
+            // 
+            // timerCheckMsgs
+            // 
+            this.timerCheckMsgs.Interval = 500;
+            this.timerCheckMsgs.Tick += new System.EventHandler(this.timerCheckMsgs_Tick);
+            // 
+            // timerCheckConnection
+            // 
+            this.timerCheckConnection.Interval = 2000;
+            this.timerCheckConnection.Tick += new System.EventHandler(this.timerCheckConnection_Tick);
             // 
             // ClienteForm
             // 
@@ -154,5 +168,7 @@
         private TextBox textBoxInput;
         private Label labelEscribeMsgs;
         private Button buttonSend;
+        private System.Windows.Forms.Timer timerCheckMsgs;
+        private System.Windows.Forms.Timer timerCheckConnection;
     }
 }

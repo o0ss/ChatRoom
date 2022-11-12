@@ -1,22 +1,24 @@
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace Cliente
 {
     public partial class ClienteForm : Form
     {
+        private static readonly int MAX_BYTES = 10240;
         static IPHostEntry host = Dns.GetHostEntry("localhost");
         static IPAddress local_ip = host.AddressList[0];
-        static IPEndPoint localEndPoint = new IPEndPoint(local_ip, 11200), remoteEP;
+        static IPEndPoint remoteEP;
         private Socket handler;
-        private bool activo = false, connected = false, last_conn_st = false, bind = false;
+        private bool activo = false, connected = false, last_conn_st = false;
+        private string EXIT_SIG = "x0004:!";
         private DateTime now = DateTime.Now, last = DateTime.MinValue;
 
         public ClienteForm()
         {
             InitializeComponent();
         }
-
         private void buttonConnect_Click(object sender, EventArgs e)
         {
             if (!activo)
@@ -50,16 +52,13 @@ namespace Cliente
             else
             {
                 //Desconectar de servidor
-                DesconectarServidor();
-                listBoxMsgs.Enabled=false;
-                buttonSend.Enabled=false;
+                DesconectarDeServidor();
+                listBoxMsgs.Enabled = false;
+                buttonSend.Enabled = false;
                 textBoxInput.Enabled = false;
                 buttonConnect.Text = "Conectar";
                 activo = false;
             }
-
-
-
             return;
         }
 
@@ -72,7 +71,8 @@ namespace Cliente
                 handler.Connect(remoteEP);
 
                 //Activar timers
-
+                timerCheckConnection.Enabled = true;   
+                timerCheckMsgs.Enabled = true;
 
 
                 return;
@@ -83,17 +83,102 @@ namespace Cliente
                 MessageBox.Show(e.ToString());
                 throw;
             }
-            
+
         }
 
-        private void DesconectarServidor()
+        private void timerCheckMsgs_Tick(object sender, EventArgs e)
         {
+            RecibirMensajes();
+            return;
+        }
+
+        private void timerCheckConnection_Tick(object sender, EventArgs e)
+        {
+            connected = handler.Connected;
+            if (last_conn_st != connected)
+            {
+                //IPAddress.Parse(((IPEndPoint)handler.RemoteEndPoint).Address.ToString())
+                string rem_ip = ((IPEndPoint)handler.RemoteEndPoint).Address.ToString();
+                labelConnStatus.Text = connected ?
+                    "Conectado a " + rem_ip : "Desconectado";
+                last_conn_st = connected;
+            }
+        }
+
+        private void RecibirMensajes()
+        {
+            int buffer_size = handler.Available;
+
+            if (buffer_size > 0)
+            {
+                string msg_recvd;
+                byte[] bytes_recvd = new byte[MAX_BYTES];
+                int num_bytes_recvd;
+
+                num_bytes_recvd = handler.Receive(bytes_recvd);
+                msg_recvd = Encoding.UTF8.GetString(bytes_recvd, 0, num_bytes_recvd);
+
+                string msg = msg_recvd[..^5];
+
+                if (msg.Equals(EXIT_SIG))
+                {
+                    timerCheckMsgs.Enabled = false;
+                    timerCheckConnection.Enabled = false;
+                    handler.Shutdown(SocketShutdown.Both);
+                    handler.Close();
+                    labelConnStatus.Text = "Desconectado.";
+                    last_conn_st = false;
+                    return;
+                }
+
+                AgregarAMensajes("Servidor: " + msg);
+            }
+
+            return;
+        }
+
+        private void buttonSend_Click(object sender, EventArgs e)
+        {
+            EnviarMensaje();
+        }
+
+        private void EnviarMensaje()
+        {
+            string msg = textBoxInput.Text;
+            byte[] response_bytes = Encoding.UTF8.GetBytes(msg);
+            handler.Send(response_bytes);
+            AgregarAMensajes("Servidor: " + msg);
+            textBoxInput.Clear();
+
+            return;
+        }
+
+        private void DesconectarDeServidor()
+        {
+            handler.Send(Encoding.UTF8.GetBytes(EXIT_SIG));
+
             // Desactivar timers
+            timerCheckConnection.Enabled = false;
+            timerCheckMsgs.Enabled = false;
 
             handler.Shutdown(SocketShutdown.Both);
             handler.Close();
             labelConnStatus.Text = "Desconectado";
+            last_conn_st = false;
             return;
+        }
+
+        private void AgregarAMensajes(string msg)
+        {
+            now = DateTime.Now;
+            TimeSpan diff = now - last;
+            if (diff.Seconds > 10)
+            {
+                string time = now.Hour + ":" + now.Minute + ":" + now.Second;
+                listBoxMsgs.Items.Add("        " + time + "        ");
+            }
+            listBoxMsgs.Items.Add(msg);
+            last = now;
         }
     }
 }

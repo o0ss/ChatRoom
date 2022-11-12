@@ -70,13 +70,12 @@
             this.listBoxMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.listBoxMsgs.Enabled = false;
-            this.listBoxMsgs.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.listBoxMsgs.FormattingEnabled = true;
-            this.listBoxMsgs.ItemHeight = 20;
+            this.listBoxMsgs.ItemHeight = 15;
             this.listBoxMsgs.Location = new System.Drawing.Point(23, 41);
             this.listBoxMsgs.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.listBoxMsgs.Name = "listBoxMsgs";
-            this.listBoxMsgs.Size = new System.Drawing.Size(397, 284);
+            this.listBoxMsgs.Size = new System.Drawing.Size(397, 274);
             this.listBoxMsgs.TabIndex = 7;
             // 
             // buttonSend

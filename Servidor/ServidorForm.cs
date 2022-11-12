@@ -13,6 +13,7 @@ namespace Servidor
         static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, 11200);
         private Socket listener, handler;
         private bool activo = false, connected = false, last_conn_st = false, bind = false;
+        private string EXIT_SIG = "x0004:!";
         private DateTime now = DateTime.Now, last = DateTime.MinValue;
 
         public ServidorForm()
@@ -123,7 +124,7 @@ namespace Servidor
             while (true)
             {
                 num_bytes_recvd = handlers[0].Receive(bytes_recvd);
-                msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
+                msg_recvd = Encoding.UTF8.GetString(bytes_recvd, 0, num_bytes_recvd);
 
                 if (msg_recvd.IndexOf("<EOF>") > -1)
                     break;
@@ -209,16 +210,28 @@ namespace Servidor
                 int num_bytes_recvd;
 
                 num_bytes_recvd = handler.Receive(bytes_recvd);
-                msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
+                msg_recvd = Encoding.UTF8.GetString(bytes_recvd, 0, num_bytes_recvd);
 
                 string msg = msg_recvd[..^5];
+
+                if (msg.Equals(EXIT_SIG))
+                {
+                    timerCheckMsgs.Enabled = false;
+                    timerCheckConnection.Enabled = false;
+                    handler.Shutdown(SocketShutdown.Both);
+                    handler.Close();
+                    labelConnStatus.Text = "Desconectado.";
+                    last_conn_st = false;
+                    return;
+                }
+
                 AgregarAMensajes("Cliente: " + msg);
             }
 
             //while (true) //maybe remove while
             //{
             //    num_bytes_recvd = handler.Receive(bytes_recvd);
-            //    msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
+            //    msg_recvd = Encoding.UTF8.GetString(bytes_recvd, 0, num_bytes_recvd);
 
             //    if (msg_recvd.IndexOf("<EOF>") > -1)
             //        break;
@@ -252,6 +265,8 @@ namespace Servidor
 
         private void DetenerServidor()
         {
+            handler.Send(Encoding.UTF8.GetBytes(EXIT_SIG));
+            
             timerCheckMsgs.Enabled = false;
             timerCheckConnection.Enabled = false;
             handler.Shutdown(SocketShutdown.Both);
