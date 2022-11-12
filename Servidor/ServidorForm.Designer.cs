@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.labelMsgs = new System.Windows.Forms.Label();
             this.buttonStart = new System.Windows.Forms.Button();
             this.listBoxMsgs = new System.Windows.Forms.ListBox();
             this.buttonSend = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.textBoxInput = new System.Windows.Forms.TextBox();
+            this.timerCheckMsgs = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // labelMsgs
@@ -94,6 +96,12 @@
             this.textBoxInput.Size = new System.Drawing.Size(352, 23);
             this.textBoxInput.TabIndex = 8;
             // 
+            // timerCheckMsgs
+            // 
+            this.timerCheckMsgs.Enabled = true;
+            this.timerCheckMsgs.Interval = 500;
+            this.timerCheckMsgs.Tick += new System.EventHandler(this.timerCheckMsgs_Tick);
+            // 
             // ServidorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -119,5 +127,6 @@
         private Button buttonSend;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private TextBox textBoxInput;
+        private System.Windows.Forms.Timer timerCheckMsgs;
     }
 }

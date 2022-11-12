@@ -30,15 +30,6 @@ namespace Servidor
             textBoxInput.Enabled = true;
             buttonSend.Enabled = true;
 
-            IntercambiarMensajes();
-
-            DetenerServidor();
-
-            //handler.Shutdown(SocketShutdown.Both);
-            //handler.Close();
-
-            AgregarAMensajes("Servidor apagado.");
-
         }
 
         public void IniciarServidor()
@@ -66,6 +57,18 @@ namespace Servidor
                 MessageBox.Show(e.ToString());
                 throw;
             }
+        }
+
+        private void Idle()
+        {
+            //IntercambiarMensajes();
+
+            //DetenerServidor();
+
+            //handler.Shutdown(SocketShutdown.Both);
+            //handler.Close();
+
+            //AgregarAMensajes("Servidor apagado.");
         }
 
         public void ListenForClientes()
@@ -124,54 +127,62 @@ namespace Servidor
             taskRecibir.Start();
             taskEnviar.Start();
 
-            do
-            {
-                if(msgs_nuevos.Count > 0)
-                {
-                    if (msgs_nuevos.ElementAt(0).Equals("exit!"))
-                    {
-                        salir = true;
-                    }
-                    else
-                    {
-                        AgregarAMensajes(msgs_nuevos.ElementAt(0));
-                        msgs_nuevos.RemoveAt(0);
-                    }
-                }
-            } while (!salir);
+            //do
+            //{
+            //    if(msgs_nuevos.Count > 0)
+            //    {
+            //        if (msgs_nuevos.ElementAt(0).Equals("exit!"))
+            //        {
+            //            salir = true;
+            //        }
+            //        else
+            //        {
+            //            AgregarAMensajes(msgs_nuevos.ElementAt(0));
+            //            msgs_nuevos.RemoveAt(0);
+            //        }
+            //    }
+            //} while (!salir);
 
             return;
         }
 
         private void EnviarMensaje()
         {
-            MessageBox.Show("test from enviar");
+            //MessageBox.Show("test from enviar");
+            //msgs_nuevos.Add("msg from enviar");
 
-            do
-            {
-                if(send)
-                {
-                    byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
-                    handler.Send(response_bytes);
-                    textBoxInput.Clear();
-                    send = false;
-                }
-            } while (!salir);
+            string msg = textBoxInput.Text;
+            byte[] response_bytes = Encoding.UTF8.GetBytes(msg);
+            handler.Send(response_bytes);
+            AgregarAMensajes("Servidor: " + msg);
+            textBoxInput.Clear();
+
+            //do
+            //{
+            //    if(send)
+            //    {
+            //        byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
+            //        handler.Send(response_bytes);
+            //        textBoxInput.Clear();
+            //        send = false;
+            //    }
+            //} while (!salir);
 
             return;
         }
 
         private void RecibirMensajes()
         {
-            MessageBox.Show("test from recibir");
-            msgs_nuevos.Add("msg from recibir");
+            //MessageBox.Show("test from recibir");
+            //msgs_nuevos.Add("msg from recibir");
+            //AgregarAMensajes("test from recibir");
 
-            //string msg_recvd;
-            //byte[] bytes_recvd = new byte[MAX_BYTES];
-            //int num_bytes_recvd;
+            string msg_recvd;
+            byte[] bytes_recvd = new byte[MAX_BYTES];
+            int num_bytes_recvd;
 
 
-            //while (true)
+            //while (true) //maybe remove while
             //{
             //    num_bytes_recvd = handler.Receive(bytes_recvd);
             //    msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
@@ -179,16 +190,25 @@ namespace Servidor
             //    if (msg_recvd.IndexOf("<EOF>") > -1)
             //        break;
             //}
-            //string msg = msg_recvd[..^5];
-            //msg = "Cliente: " + msg;
-            //listBoxMsgs.Items.Add(msg);
+
+            num_bytes_recvd = handler.Receive(bytes_recvd);
+            msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
+
+            string msg = msg_recvd[..^5];
+            AgregarAMensajes("Cliente: " + msg);
 
 
             return;
         }
+
+        private void timerCheckMsgs_Tick(object sender, EventArgs e)
+        {
+            RecibirMensajes();
+        }
+
         private void buttonSend_Click(object sender, EventArgs e)
         {
-            send = true;
+            EnviarMensaje();
         }
 
         private void DetenerServidor()
@@ -201,7 +221,7 @@ namespace Servidor
         {
             now = DateTime.Now;
             TimeSpan diff = now - last;
-            if (diff.Seconds > 20)
+            if (diff.Seconds > 5)
             {
                 listBoxMsgs.Items.Add("------ " + now + " ------");
             }
