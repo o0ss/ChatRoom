@@ -47,6 +47,7 @@ namespace Servidor
                 listener.Listen(10);
 
                 handler = listener.Accept();
+                timerCheckMsgs.Enabled = true;
                 AgregarAMensajes("Conexión exitosa");
 
                 //listener.Shutdown(SocketShutdown.Both);
@@ -177,10 +178,20 @@ namespace Servidor
             //msgs_nuevos.Add("msg from recibir");
             //AgregarAMensajes("test from recibir");
 
-            string msg_recvd;
-            byte[] bytes_recvd = new byte[MAX_BYTES];
-            int num_bytes_recvd;
+            int buffer_size = handler.Available;
 
+            if (buffer_size > 0)
+            {
+                string msg_recvd;
+                byte[] bytes_recvd = new byte[MAX_BYTES];
+                int num_bytes_recvd;
+
+                num_bytes_recvd = handler.Receive(bytes_recvd);
+                msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
+
+                string msg = msg_recvd[..^5];
+                AgregarAMensajes("Cliente: " + msg);
+            }
 
             //while (true) //maybe remove while
             //{
@@ -190,13 +201,6 @@ namespace Servidor
             //    if (msg_recvd.IndexOf("<EOF>") > -1)
             //        break;
             //}
-
-            num_bytes_recvd = handler.Receive(bytes_recvd);
-            msg_recvd = Encoding.ASCII.GetString(bytes_recvd, 0, num_bytes_recvd);
-
-            string msg = msg_recvd[..^5];
-            AgregarAMensajes("Cliente: " + msg);
-
 
             return;
         }

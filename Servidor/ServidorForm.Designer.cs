@@ -98,7 +98,6 @@
             // 
             // timerCheckMsgs
             // 
-            this.timerCheckMsgs.Enabled = true;
             this.timerCheckMsgs.Interval = 500;
             this.timerCheckMsgs.Tick += new System.EventHandler(this.timerCheckMsgs_Tick);
             // 
