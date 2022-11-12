@@ -32,7 +32,7 @@
             this.textBoxIPAddress = new System.Windows.Forms.TextBox();
             this.labelConnectTo = new System.Windows.Forms.Label();
             this.labelConnStatus = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listBoxMsgs = new System.Windows.Forms.ListBox();
             this.labelMsgs = new System.Windows.Forms.Label();
             this.textBoxInput = new System.Windows.Forms.TextBox();
             this.labelEscribeMsgs = new System.Windows.Forms.Label();
@@ -75,15 +75,15 @@
             this.labelConnStatus.TabIndex = 3;
             this.labelConnStatus.Text = "Desconectado";
             // 
-            // listBox1
+            // listBoxMsgs
             // 
-            this.listBox1.Enabled = false;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
-            this.listBox1.Location = new System.Drawing.Point(206, 39);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(334, 289);
-            this.listBox1.TabIndex = 4;
+            this.listBoxMsgs.Enabled = false;
+            this.listBoxMsgs.FormattingEnabled = true;
+            this.listBoxMsgs.ItemHeight = 15;
+            this.listBoxMsgs.Location = new System.Drawing.Point(206, 39);
+            this.listBoxMsgs.Name = "listBoxMsgs";
+            this.listBoxMsgs.Size = new System.Drawing.Size(334, 289);
+            this.listBoxMsgs.TabIndex = 4;
             // 
             // labelMsgs
             // 
@@ -131,7 +131,7 @@
             this.Controls.Add(this.labelEscribeMsgs);
             this.Controls.Add(this.textBoxInput);
             this.Controls.Add(this.labelMsgs);
-            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.listBoxMsgs);
             this.Controls.Add(this.labelConnStatus);
             this.Controls.Add(this.labelConnectTo);
             this.Controls.Add(this.textBoxIPAddress);
@@ -149,7 +149,7 @@
         private TextBox textBoxIPAddress;
         private Label labelConnectTo;
         private Label labelConnStatus;
-        private ListBox listBox1;
+        private ListBox listBoxMsgs;
         private Label labelMsgs;
         private TextBox textBoxInput;
         private Label labelEscribeMsgs;
