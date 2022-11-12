@@ -13,7 +13,7 @@ namespace Servidor
         static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, 11200);
         static List<String> msgs_nuevos = new List<String>();
         private Socket handler;
-        private bool salir = false, send = false;
+        private bool salir = false, send = false, activo = false;
         private DateTime now = DateTime.Now, last = DateTime.MinValue;
 
         public ServidorForm()
@@ -23,12 +23,28 @@ namespace Servidor
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            IniciarServidor();
-            buttonStart.Enabled = false;
-            listBoxMsgs.Enabled = true;
-            labelMsgs.Enabled = true;
-            textBoxInput.Enabled = true;
-            buttonSend.Enabled = true;
+            if (!activo)
+            {
+                IniciarServidor();
+                listBoxMsgs.Enabled = true;
+                labelMsgs.Enabled = true;
+                textBoxInput.Enabled = true;
+                buttonSend.Enabled = true;
+                buttonStart.Text = "Detener servidor";
+                labelServidorStatus.Text = "El servidor está activo.";
+                activo = true;
+            }
+            else
+            {
+                DetenerServidor();
+                listBoxMsgs.Enabled = false;
+                labelMsgs.Enabled = false;
+                textBoxInput.Enabled = false;
+                buttonSend.Enabled = false;
+                buttonStart.Text = "Iniciar servidor";
+                labelServidorStatus.Text = "El servidor está desactivado.";
+                activo = false;
+            }
 
         }
 
@@ -217,6 +233,7 @@ namespace Servidor
 
         private void DetenerServidor()
         {
+            timerCheckMsgs.Enabled = false;
             handler.Shutdown(SocketShutdown.Both);
             handler.Close();
         }
@@ -227,7 +244,7 @@ namespace Servidor
             TimeSpan diff = now - last;
             if (diff.Seconds > 5)
             {
-                listBoxMsgs.Items.Add("------ " + now + " ------");
+                listBoxMsgs.Items.Add("------ " + now.TimeOfDay + " ------");
             }
             listBoxMsgs.Items.Add(msg);
             last = now;
