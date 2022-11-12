@@ -12,7 +12,7 @@ namespace Cliente
         static IPEndPoint remoteEP;
         private Socket handler;
         private bool activo = false, connected = false, last_conn_st = false;
-        private string EXIT_SIG = "x0004:!";
+        private string EXIT_SIG = "____EXIT____";
         private DateTime now = DateTime.Now, last = DateTime.MinValue;
 
         public ClienteForm()
@@ -116,9 +116,10 @@ namespace Cliente
                 int num_bytes_recvd;
 
                 num_bytes_recvd = handler.Receive(bytes_recvd);
-                msg_recvd = Encoding.UTF8.GetString(bytes_recvd, 0, num_bytes_recvd);
+                msg_recvd = Encoding.UTF32.GetString(bytes_recvd, 0, num_bytes_recvd);
 
-                string msg = msg_recvd[..^5];
+                //string msg = msg_recvd[..^5];
+                string msg = msg_recvd;
 
                 if (msg.Equals(EXIT_SIG))
                 {
@@ -145,9 +146,9 @@ namespace Cliente
         private void EnviarMensaje()
         {
             string msg = textBoxInput.Text;
-            byte[] response_bytes = Encoding.UTF8.GetBytes(msg);
+            byte[] response_bytes = Encoding.UTF32.GetBytes(msg);
             handler.Send(response_bytes);
-            AgregarAMensajes("Servidor: " + msg);
+            AgregarAMensajes("Cliente: " + msg);
             textBoxInput.Clear();
 
             return;
@@ -155,7 +156,7 @@ namespace Cliente
 
         private void DesconectarDeServidor()
         {
-            handler.Send(Encoding.UTF8.GetBytes(EXIT_SIG));
+            handler.Send(Encoding.UTF32.GetBytes(EXIT_SIG));
 
             // Desactivar timers
             timerCheckConnection.Enabled = false;

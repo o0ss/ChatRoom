@@ -13,7 +13,7 @@ namespace Servidor
         static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, 11200);
         private Socket listener, handler;
         private bool activo = false, connected = false, last_conn_st = false, bind = false;
-        private string EXIT_SIG = "x0004:!";
+        private string EXIT_SIG = "____EXIT____";
         private DateTime now = DateTime.Now, last = DateTime.MinValue;
 
         public ServidorForm()
@@ -124,7 +124,7 @@ namespace Servidor
             while (true)
             {
                 num_bytes_recvd = handlers[0].Receive(bytes_recvd);
-                msg_recvd = Encoding.UTF8.GetString(bytes_recvd, 0, num_bytes_recvd);
+                msg_recvd = Encoding.UTF32.GetString(bytes_recvd, 0, num_bytes_recvd);
 
                 if (msg_recvd.IndexOf("<EOF>") > -1)
                     break;
@@ -133,7 +133,7 @@ namespace Servidor
 
             MessageBox.Show("Cliente: " + clean_query);
 
-            byte[] response_bytes = Encoding.UTF8.GetBytes("Bye!");
+            byte[] response_bytes = Encoding.UTF32.GetBytes("Bye!");
             handlers[0].Send(response_bytes);
 
 
@@ -176,7 +176,7 @@ namespace Servidor
             //msgs_nuevos.Add("msg from enviar");
 
             string msg = textBoxInput.Text;
-            byte[] response_bytes = Encoding.UTF8.GetBytes(msg);
+            byte[] response_bytes = Encoding.UTF32.GetBytes(msg);
             handler.Send(response_bytes);
             AgregarAMensajes("Servidor: " + msg);
             textBoxInput.Clear();
@@ -185,7 +185,7 @@ namespace Servidor
             //{
             //    if(send)
             //    {
-            //        byte[] response_bytes = Encoding.UTF8.GetBytes(textBoxInput.Text);
+            //        byte[] response_bytes = Encoding.UTF32.GetBytes(textBoxInput.Text);
             //        handler.Send(response_bytes);
             //        textBoxInput.Clear();
             //        send = false;
@@ -210,9 +210,10 @@ namespace Servidor
                 int num_bytes_recvd;
 
                 num_bytes_recvd = handler.Receive(bytes_recvd);
-                msg_recvd = Encoding.UTF8.GetString(bytes_recvd, 0, num_bytes_recvd);
+                msg_recvd = Encoding.UTF32.GetString(bytes_recvd, 0, num_bytes_recvd);
 
-                string msg = msg_recvd[..^5];
+                //string msg = msg_recvd[..^5];
+                string msg = msg_recvd;
 
                 if (msg.Equals(EXIT_SIG))
                 {
@@ -231,7 +232,7 @@ namespace Servidor
             //while (true) //maybe remove while
             //{
             //    num_bytes_recvd = handler.Receive(bytes_recvd);
-            //    msg_recvd = Encoding.UTF8.GetString(bytes_recvd, 0, num_bytes_recvd);
+            //    msg_recvd = Encoding.UTF32.GetString(bytes_recvd, 0, num_bytes_recvd);
 
             //    if (msg_recvd.IndexOf("<EOF>") > -1)
             //        break;
@@ -265,7 +266,7 @@ namespace Servidor
 
         private void DetenerServidor()
         {
-            handler.Send(Encoding.UTF8.GetBytes(EXIT_SIG));
+            handler.Send(Encoding.UTF32.GetBytes(EXIT_SIG));
             
             timerCheckMsgs.Enabled = false;
             timerCheckConnection.Enabled = false;
