@@ -173,7 +173,6 @@ namespace Cliente
             {
                 string time = String.Format("{0,15}", now.TimeOfDay.ToString()[..^8]);
                 listBoxMsgs.Items.Add("");
-
                 listBoxMsgs.Items.Add(time);
             }
             listBoxMsgs.Items.Add(msg);

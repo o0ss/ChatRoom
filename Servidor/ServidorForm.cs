@@ -65,7 +65,7 @@ namespace Servidor
                     listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                     listener.Bind(localEndPoint);
 
-                    listener.Listen(1);
+                    listener.Listen(4);
                     bind = true;
                 }
 
@@ -278,8 +278,9 @@ namespace Servidor
             TimeSpan diff = now - last;
             if (diff.Seconds > 10)
             {
-                string time = now.Hour + ":" + now.Minute + ":" + now.Second;
-                listBoxMsgs.Items.Add("        " + time + "        ");
+                string time = String.Format("{0,15}", now.TimeOfDay.ToString()[..^8]);
+                listBoxMsgs.Items.Add("");
+                listBoxMsgs.Items.Add(time);
             }
             listBoxMsgs.Items.Add(msg);
             last = now;
