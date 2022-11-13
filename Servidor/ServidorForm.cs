@@ -65,7 +65,7 @@ namespace Servidor
                     listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                     listener.Bind(localEndPoint);
 
-                    listener.Listen(10);
+                    listener.Listen(1);
                     bind = true;
                 }
 
@@ -107,7 +107,7 @@ namespace Servidor
 
             for (int i = 0; i < MAX_CLIENTES; i++)
             {
-                listener.Listen(10);
+                listener.Listen(1);
                 MessageBox.Show("Esperando conexión...");
                 Socket nuevo_handler = listener.Accept();
                 handlers.Add(nuevo_handler);
@@ -218,6 +218,7 @@ namespace Servidor
                 if (msg.Equals(EXIT_SIG))
                 {
                     buttonStart_Click(new object(), new EventArgs());
+                    AgregarAMensajes("---- El cliente se desconectó. ----");
                     return;
                 }
 

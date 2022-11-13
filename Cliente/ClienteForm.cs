@@ -124,6 +124,7 @@ namespace Cliente
                 if (msg.Equals(EXIT_SIG))
                 {
                     buttonConnect_Click(new object(), new EventArgs());
+                    AgregarAMensajes("---- El servidor se desconectó. ----");
                     return;
                 }
 
@@ -170,8 +171,10 @@ namespace Cliente
             TimeSpan diff = now - last;
             if (diff.Seconds > 10)
             {
-                string time = now.Hour + ":" + now.Minute + ":" + now.Second;
-                listBoxMsgs.Items.Add("\n" + now.ToString());
+                string time = String.Format("{0,15}", now.TimeOfDay.ToString()[..^8]);
+                listBoxMsgs.Items.Add("");
+
+                listBoxMsgs.Items.Add(time);
             }
             listBoxMsgs.Items.Add(msg);
             last = now;
