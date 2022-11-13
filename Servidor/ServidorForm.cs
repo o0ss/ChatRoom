@@ -7,10 +7,10 @@ namespace Servidor
 {
     public partial class ServidorForm : Form
     {
-        private static readonly int MAX_BYTES = 10240, MAX_CLIENTES = 5;
+        private static readonly int MAX_BYTES = 10240, MAX_CLIENTES = 5, PORT = 11244;
         static IPHostEntry host = Dns.GetHostEntry("localhost");
         static IPAddress ip_addr = host.AddressList[0];
-        static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, 11200);
+        static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, PORT);
         private Socket listener, handler;
         private bool activo = false, connected = false, last_conn_st = false, bind = false;
         private string EXIT_SIG = "____EXIT____";

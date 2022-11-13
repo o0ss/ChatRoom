@@ -71,6 +71,7 @@
             // 
             // labelConnStatus
             // 
+            this.labelConnStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelConnStatus.AutoSize = true;
             this.labelConnStatus.Location = new System.Drawing.Point(458, 21);
             this.labelConnStatus.Name = "labelConnStatus";
@@ -80,6 +81,9 @@
             // 
             // listBoxMsgs
             // 
+            this.listBoxMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxMsgs.Enabled = false;
             this.listBoxMsgs.FormattingEnabled = true;
             this.listBoxMsgs.ItemHeight = 15;
@@ -99,6 +103,8 @@
             // 
             // textBoxInput
             // 
+            this.textBoxInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxInput.Enabled = false;
             this.textBoxInput.Location = new System.Drawing.Point(206, 368);
             this.textBoxInput.Multiline = true;
@@ -108,6 +114,8 @@
             // 
             // labelEscribeMsgs
             // 
+            this.labelEscribeMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelEscribeMsgs.AutoSize = true;
             this.labelEscribeMsgs.Location = new System.Drawing.Point(206, 350);
             this.labelEscribeMsgs.Name = "labelEscribeMsgs";
@@ -117,6 +125,7 @@
             // 
             // buttonSend
             // 
+            this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonSend.Enabled = false;
             this.buttonSend.Location = new System.Drawing.Point(427, 402);
             this.buttonSend.Name = "buttonSend";

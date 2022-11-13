@@ -54,8 +54,7 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonStart.Location = new System.Drawing.Point(459, 41);
             this.buttonStart.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.buttonStart.Name = "buttonStart";
@@ -67,8 +66,9 @@
             // 
             // listBoxMsgs
             // 
-            this.listBoxMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.listBoxMsgs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxMsgs.Enabled = false;
             this.listBoxMsgs.FormattingEnabled = true;
             this.listBoxMsgs.ItemHeight = 15;
@@ -80,7 +80,7 @@
             // 
             // buttonSend
             // 
-            this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonSend.Enabled = false;
             this.buttonSend.Location = new System.Drawing.Point(314, 407);
             this.buttonSend.Name = "buttonSend";
@@ -105,6 +105,7 @@
             // 
             // labelServidorStatus
             // 
+            this.labelServidorStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelServidorStatus.AutoSize = true;
             this.labelServidorStatus.Location = new System.Drawing.Point(459, 76);
             this.labelServidorStatus.Name = "labelServidorStatus";
@@ -119,6 +120,8 @@
             // 
             // labelConnStatus
             // 
+            this.labelConnStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.labelConnStatus.AutoSize = true;
             this.labelConnStatus.Location = new System.Drawing.Point(338, 21);
             this.labelConnStatus.Name = "labelConnStatus";
@@ -128,6 +131,7 @@
             // 
             // labelEscribeMsg
             // 
+            this.labelEscribeMsg.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelEscribeMsg.AutoSize = true;
             this.labelEscribeMsg.Location = new System.Drawing.Point(23, 357);
             this.labelEscribeMsg.Name = "labelEscribeMsg";

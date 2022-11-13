@@ -6,7 +6,7 @@ namespace Cliente
 {
     public partial class ClienteForm : Form
     {
-        private static readonly int MAX_BYTES = 10240;
+        private static readonly int MAX_BYTES = 10240, PORT = 11244;
         static IPHostEntry host = Dns.GetHostEntry("localhost");
         static IPAddress local_ip = host.AddressList[0];
         static IPEndPoint remoteEP;
@@ -67,7 +67,7 @@ namespace Cliente
             try
             {
                 handler = new Socket(server_ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                remoteEP = new IPEndPoint(server_ip, 11200);
+                remoteEP = new IPEndPoint(server_ip, PORT);
                 handler.Connect(remoteEP);
 
                 //Activar timers
