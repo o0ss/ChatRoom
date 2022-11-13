@@ -8,11 +8,11 @@ namespace Servidor
     public partial class ServidorForm : Form
     {
         private static readonly int MAX_BYTES = 10240, MAX_CLIENTES = 5, PORT = 11244;
-        //static IPHostEntry host = Dns.GetHostEntry("localhost");
-        //static IPAddress ip_addr = host.AddressList[0];
+        static IPHostEntry host = Dns.GetHostEntry("localhost");
+        static IPAddress ip_addr = host.AddressList[0];
         
-        private static string HOST_IP = "192.168.1.11";
-        static IPAddress ip_addr = IPAddress.Parse(HOST_IP);
+        //private static string HOST_IP = "192.168.1.16";
+        //static IPAddress ip_addr = IPAddress.Parse(HOST_IP);
 
         static IPEndPoint localEndPoint = new IPEndPoint(ip_addr, PORT);
         private Socket listener, handler;
@@ -68,12 +68,12 @@ namespace Servidor
 
                 if (!bind)
                 {
-                    //listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                    listener = new Socket(
-                        AddressFamily.InterNetwork, 
-                        SocketType.Stream, 
-                        ProtocolType.Tcp
-                    );
+                    listener = new Socket(ip_addr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                    //listener = new Socket(
+                    //    AddressFamily.InterNetwork, 
+                    //    SocketType.Stream, 
+                    //    ProtocolType.Tcp
+                    //);
 
                     listener.Bind(localEndPoint);
 

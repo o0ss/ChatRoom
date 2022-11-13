@@ -38,7 +38,8 @@ namespace Cliente
                 else
                 {
                     //MessageBox.Show(serv_ip.ToString());
-                    ConectarAServidor(serv_ip);
+                    //ConectarAServidor(serv_ip);
+                    ConectarAServidor(local_ip);
                     listBoxMsgs.Enabled = true;
                     buttonSend.Enabled = true;
                     textBoxInput.Enabled = true;
