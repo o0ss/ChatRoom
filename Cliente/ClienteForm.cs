@@ -23,31 +23,36 @@ namespace Cliente
         {
             if (!activo)
             {
-                //string input_ip = textBoxIPAddress.Text;
-                //if (input_ip.Equals(""))
-                //{
-                //    MessageBox.Show("Escribe la dirección IP del servidor.");
-                //    return;
-                //}
-                //IPAddress serv_ip;
-                //if ( ! IPAddress.TryParse(input_ip, out serv_ip))
-                //{
-                //    MessageBox.Show("La dirección IP no es válida.");
-                //    return;
-                //}
-                //else
-                //{
-                //    //MessageBox.Show(serv_ip.ToString());
-                //    ConectarAServidor(serv_ip);
-                //}
+                string input_ip = textBoxIPAddress.Text;
+                if (input_ip.Equals(""))
+                {
+                    MessageBox.Show("Escribe la dirección IP del servidor.");
+                    return;
+                }
+                IPAddress serv_ip;
+                if (!IPAddress.TryParse(input_ip, out serv_ip))
+                {
+                    MessageBox.Show("La dirección IP no es válida.");
+                    return;
+                }
+                else
+                {
+                    //MessageBox.Show(serv_ip.ToString());
+                    ConectarAServidor(serv_ip);
+                    listBoxMsgs.Enabled = true;
+                    buttonSend.Enabled = true;
+                    textBoxInput.Enabled = true;
+                    buttonConnect.Text = "Desconectar";
+                    activo = true;
+                }
 
-                ConectarAServidor(local_ip);
+                //ConectarAServidor(local_ip);
 
-                listBoxMsgs.Enabled = true;
-                buttonSend.Enabled = true;
-                textBoxInput.Enabled = true;
-                buttonConnect.Text = "Desconectar";
-                activo = true;
+                //listBoxMsgs.Enabled = true;
+                //buttonSend.Enabled = true;
+                //textBoxInput.Enabled = true;
+                //buttonConnect.Text = "Desconectar";
+                //activo = true;
             }
             else
             {
